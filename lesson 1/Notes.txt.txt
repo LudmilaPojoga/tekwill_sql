@@ -1,0 +1,2 @@
+-- Am instalat GitExtension de pe https://gitextensions.github.io/
+-- GitBash de pe https://git-scm.com/download/win
