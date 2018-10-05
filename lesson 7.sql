@@ -440,3 +440,239 @@ FROM dual;
 
 SELECT Substr ('MD_2002, or.Chisinau, str.M.Eminescu, ap2',1,INSTR('MD_2002, or.Chisinau, str.M.Eminescu, ap2',',',1,1))
 FROM dual;
+
+define test= 'MD_2002, or.Chisinau, str.M.Eminescu, ap2'
+SELECT Substr ( '&test',1, INSTR ('&test',',',1,1))
+FROM dual;
+
+--ex2 tema 7
+SELECT student_id,
+       course_id,
+       marks,
+       marks*1.15 AS "New Score"
+FROM ad_exam_results;
+
+--ex5
+SELECT INITCAP(first_name) as Name,
+       Length (first_name) AS length
+FROM ad_student_details
+WHERE first_name LIKE 'J%'
+OR first_name LIKE 'R%'
+OR first_name LIKE 'M%'
+ORDER BY Name;
+
+SELECT INITCAP(first_name) as Name,
+       Length (first_name) AS length
+FROM ad_student_details
+WHERE first_name = like '&nume%'
+ORDER BY Name;
+
+use ora 02
+SELECT *
+from String_Addreses;
+
+Create table String_Addreses as
+Select 'MD-2002,or.Chisinau, str. Mihai Eminescu 12, ap.28' as address from dual
+Union
+Select '2010,or.Chisinau, str. Grigore Vieru 50, ap.3' as address from dual
+Union
+Select 'MD2015,or.Chisinau, str. Ion Creanga 4, ap.17'  as address from dual
+Union
+Select 'md-2030,Chisinau, st. Muncesti 8, ap.54'  as address from dual
+Union
+Select 'MD-2004,Chisineov, str-da. Bucuriei 2, ap.23'  as address from dual
+Union
+Select 'Md-2045,or Chisin., s. Ion Inculet 8, ap.50'  as address from dual
+Union
+Select 'Md2013,chisinau, str. Vasile Lupu 40, ap.20'  as address from dual
+Union
+Select 'MD2031,or.CHISINAU,'  as address from dual
+Union
+Select 'md2017,or.CH, str. , ap.28'  as address from dual;
+
+SELECT *
+FROM String_Addreses;
+
+SELECT ADDRESS,
+       SUBSTR(ADDRESS,1, INSTR (ADDRESS,',',1,1)) AS col,
+       SUBSTR(SUBSTR(ADDRESS,1, INSTR (ADDRESS,',',1,1)),-5,4) as adr,
+       CONCAT ('MD_',SUBSTR(SUBSTR(ADDRESS,1, INSTR (ADDRESS,',',1,1)),-5,4)) as adresa
+FROM String_Addreses;
+
+SELECT salary,
+       lpad(salary,6,'$'),
+       rpad(salary,6,'$')
+FROM employees;
+
+SELECT salary,
+       concat(concat(concat(first_name, concat(' ',last_name)),' '),salary) as full_name,
+       lower ( concat(concat(concat(first_name, concat(' ',last_name)),' '),salary)) as name_mic,
+       upper ( concat(concat(concat(first_name, concat(' ',last_name)),' '),salary)) as nume_mare
+FROM employees;
+
+SELECT --ROUND (100.455321, 2), rotungeste zecimalele
+       ROUND (100.455321, 2),
+       ROUND (100.455321),
+       -- ROUND (100.455321, -1), rotungeste unitatile
+       -- ROUND (150.455321, -2), rotungeste zecile
+        TRUNC (100.455321,2), --taie zecimalele
+        ceil (100.455321), --rotungeste in sus
+        floor(100.455321) --rotungeste in jos
+FROM dual;
+
+
+SELECT mod (10,5),
+       mod (10,3) -- arata cit rest ramine de la impartire
+FROM dual;
+
+--tema pe acasa Activity L3
+--1)Lucratorii cu salariu mai mare de 12000
+SELECT last_name,
+       salary
+FROM employees
+WHERE salary >12000;
+
+--2)angajatul cu nr 176
+SELECT last_name,
+       department_id
+FROM employees
+WHERE employee_id =176;
+
+--3)salariatii cu cele mai mici si cele mai mari salarii
+SELECT last_name,
+       salary
+FROM employees
+WHERE salary NOT BETWEEN 5000 AND 12000;
+
+--4)
+SELECT last_name,
+       job_id,
+       hire_date             
+FROM employees
+WHERE last_name IN ('Matos', 'Taylor')
+ORDER BY hire_date ASC;
+
+--5)
+SELECT last_name,
+       department_id
+FROM employees
+WHERE department_id=20
+OR department_id=50
+ORDER BY last_name ASC;
+
+--6)
+SELECT last_name as Employee,
+       salary as "Monthly Salary"
+FROM employees
+WHERE salary BETWEEN 5000 AND 12000
+AND (department_id=20
+OR department_id=50);
+
+--7)
+SELECT last_name,
+       hire_date             
+FROM employees
+WHERE hire_date LIKE '%6';
+
+--8)
+SELECT last_name,
+       job_id             
+FROM employees
+WHERE manager_id IS NULL;
+
+--9)
+SELECT last_name,
+       salary,
+       commission_pct
+FROM employees
+WHERE commission_pct IS NOT NULL
+ORDER BY 2 DESC, 3 DESC;
+
+--10)
+SELECT last_name,
+       salary       
+FROM employees
+WHERE salary > &salariu;
+
+--11)
+SELECT employee_id,
+       last_name,
+       salary,
+       department_id
+FROM employees
+WHERE manager_id = &manager_num
+ORDER BY &numar_coloana;
+
+--12)
+SELECT employee_id,
+       last_name
+FROM employees
+WHERE last_name LIKE '__a%';
+
+--13)
+SELECT employee_id,
+       last_name
+FROM employees
+WHERE last_name LIKE '%a%'
+AND last_name LIKE '%e%';
+
+--14)
+SELECT last_name,
+       job_id,
+       salary
+FROM employees
+WHERE job_id IN ('SA_REP', 'ST_CLERK')
+AND salary NOT IN (2500, 3500, 7000);
+
+--15)
+SELECT last_name as Employee,
+       salary as "Monthly Salary",
+       commission_pct
+FROM employees
+WHERE salary BETWEEN 5000 AND 12000
+AND commission_pct =0.20;
+
+SELECT SYSDATE,
+       current_date,
+       sessiontimezone,
+       current_timestamp
+FROM dual;
+
+SELECT last_name,
+       sysdate,
+       hire_date,
+       ROUND((sysdate-hire_date)/7,2) as Weeks
+FROM employees;
+
+SELECT round((sysdate-start_date)) days,
+       round((sysdate-start_date)/7) weeks
+FROM ad_exam_details
+WHERE exam_id=550;
+
+SELECT first_name ||' '|| last_name,
+       sysdate,
+       hire_date,
+       ROUND((sysdate-hire_date)/365) as how_old_was_hired
+FROM employees
+WHERE  ROUND((sysdate-hire_date)/365)>5;
+
+-- DATE manipulation function : 
+SELECT first_name ||' '|| last_name,
+       sysdate,
+       hire_date,
+       ROUND((sysdate-hire_date)/365.25*12) as month_was_hired,
+       round(MONTHS_BETWEEN(sysdate,hire_date)) nr_of_month, -- arata cite luni sunt intre 2 date
+       add_months(sysdate,2)as ADD_M,      -- ne aduna un nr anumit de luni la o data oarecare
+       NEXT_DAY(sysdate,'THU')as joi, -- ne arata pe ce data va fi urmatoarea de ex joi de la data scrisa
+       NEXT_DAY(sysdate,4)as "a 4 zi", -- ne arata pe ce data va fi urmatoarea de ex a 4 zi din saptamina de la data scrisa
+       LAST_DAY(sysdate) as ultima_zi -- ne arata ultima zi din luna respectiva
+       ,ROUND(hire_date,'month') as luna  -- rotungeste luna, data pina la 15 o rotungeste la 1, mai sus de 15 rotungeste la urm luna
+       ,ROUND(hire_date,'year') as anul  -- daca data curenta este in prima jumate de an el rotungeste spre 1 ianuarie anul curent,
+                               -- daca data este in a 2 jumate de an, el rotungeste spre 1 ianuarie urmatorul an
+       ,TRUNC(hire_date,'month')as prima_zi -- ne intoarce laprimazi a lunii
+       ,TRUNC(hire_date,'year')as an -- ne intoarce la prima luna din anul dat
+FROM employees;
+
+
+
+
