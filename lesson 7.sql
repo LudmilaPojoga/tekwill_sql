@@ -673,6 +673,65 @@ SELECT first_name ||' '|| last_name,
        ,TRUNC(hire_date,'year')as an -- ne intoarce la prima luna din anul dat
 FROM employees;
 
+--tema pe acasa L4
+--ex 1
+SELECT sysdate
+FROM dual;
 
+--ex2
+SELECT employee_id,
+       last_name,
+       salary,
+       ROUND(salary*1.155) AS "New Salary"
+FROM employees;
+
+--ex4
+SELECT employee_id,
+       last_name,
+       salary,
+       ROUND(salary*1.155) AS "New Salary",
+       (ROUND(salary*1.155)-salary) AS Increase
+FROM employees;
+
+--ex 5
+SELECT INITCAP(last_name) name,
+       LENGTH(last_name) length
+FROM employees
+WHERE last_name LIKE 'A%'
+OR last_name LIKE 'J%'
+OR last_name LIKE 'M%'
+ORDER BY last_name;
+
+--ex5a
+SELECT INITCAP(last_name) name,
+       LENGTH(last_name) length
+FROM employees
+WHERE last_name LIKE UPPER( '&lit%')
+ORDER BY last_name;
+
+--ex6
+SELECT last_name,
+       ROUND(MONTHS_BETWEEN(sysdate,hire_date)) months_worked
+FROM employees
+ORDER BY 2;
+
+--ex7
+SELECT last_name,
+       lpad(salary,15,'$') as Salary
+FROM employees;
+       
+--ex8
+SELECT last_name,
+       lpad('*',salary/1000,'*') as employees_and_their_salaries
+FROM employees
+ORDER BY salary DESC;
+
+--ex9
+SELECT last_name,
+       TRUNC((sysdate-hire_date)/7) as TENURE
+FROM employees
+WHERE department_id=90
+ORDER BY 2 desc;
+       
 
 
